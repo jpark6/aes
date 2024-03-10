@@ -27,17 +27,17 @@ class AES {
         return str
       }
 
-      var aesKey: String = key
-      when(keyLength) {
-        128 -> aesKey = aesKey.substring(0,16)
-        192 -> aesKey = aesKey.substring(0,24)
+      val aesKey: String = when(keyLength) {
+        128 -> key.substring(0, 16)
+        192 -> key.substring(0, 24)
+        256 -> key.substring(0, 32)
+        else -> key
       }
-      val aesMode: String = if(mode.uppercase() == "CBC") CBC else ECB
 
       val keySpec = SecretKeySpec(aesKey.toByteArray(charset("UTF-8")), "AES")
       val ivSpec = IvParameterSpec(iv.toByteArray(charset("UTF-8")))
 
-      val cipher = Cipher.getInstance(aesMode)
+      val cipher: Cipher = Cipher.getInstance(if(mode.uppercase() == "CBC") CBC else ECB)
       if(mode.uppercase() == "CBC") {
         cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec)
       } else {
@@ -61,17 +61,17 @@ class AES {
         return str
       }
 
-      var aesKey: String = key
-      when(keyLength) {
-        128 -> aesKey = aesKey.substring(0,16)
-        192 -> aesKey = aesKey.substring(0,24)
+      val aesKey: String = when(keyLength) {
+        128 -> key.substring(0, 16)
+        192 -> key.substring(0, 24)
+        256 -> key.substring(0, 32)
+        else -> key
       }
-      val aesMode: String = if(mode.uppercase() == "CBC") CBC else ECB
 
       val keySpec = SecretKeySpec(aesKey.toByteArray(charset("UTF-8")), "AES")
       val ivSpec = IvParameterSpec(iv.toByteArray(charset("UTF-8")))
 
-      val cipher: Cipher = Cipher.getInstance(aesMode)
+      val cipher: Cipher = Cipher.getInstance(if(mode.uppercase() == "CBC") CBC else ECB)
       if(mode.uppercase() == "CBC") {
         cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec)
       } else {

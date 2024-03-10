@@ -13,15 +13,14 @@ class AesApplicationRunner(secretProperties: SecretProperties): ApplicationRunne
   private final val log: Logger = LoggerFactory.getLogger(javaClass)
   private final val keyAesKey = "Q^hgA|PEs\"g=r,\$@uGLfS9zCmMK0LS*Y"
   private final val keyIv = ".AZR[}@EnXWpeMz]"
-  private final val aesKey = AES.dec(keyAesKey, keyIv, "CBC", 256, secretProperties.aesKey)
-  private final val iv = AES.dec(keyAesKey, keyIv, "CBC", 256, secretProperties.iv)
+  private final val aesKey: String = if(secretProperties.encAesKey.isNullOrEmpty()) secretProperties.aesKey else AES.dec(keyAesKey, keyIv, "CBC", 256, secretProperties.encAesKey)
+  private final val iv: String = if(secretProperties.encIv.isNullOrEmpty()) secretProperties.iv else AES.dec(keyAesKey, keyIv, "CBC", 256, secretProperties.encIv)
   override fun run(args: ApplicationArguments?) {
     val argsArr: Array<String> = args?.sourceArgs ?: arrayOf("")
-    val argsLength = argsArr.size
 
-    when(argsLength) {
+    when(argsArr.size) {
       1 -> printArgsLength1(argsArr[0].uppercase())
-      2 -> printArgsLength2(argsArr[0].uppercase(), argsArr[1].uppercase(), keyAesKey, keyIv)
+      2 -> printArgsLength2(argsArr[0].uppercase(), argsArr[1])
       4 -> printArgsLength4(argsArr[0].uppercase(), argsArr[1].uppercase(), argsArr[2], argsArr[3])
       else -> printHelpText()
     }
@@ -29,31 +28,29 @@ class AesApplicationRunner(secretProperties: SecretProperties): ApplicationRunne
   }
 
   fun printHelpText() {
-    println(
-      """
-       ----------------------------------------------------------------------
-       Encrypt / Decrypt Text
-       - Arguments:
-       - Encrypt or Decrypt : [enc/dec] (case insensitive)
-       - Mode               : [cbc/ecb] (case insensitive)
-       - Key Length         : [128/192/256]
-       - Text               : ["text for Encrypt or Decrypt"]
-       - ex) java -jar aes-0.0.1.jar enc cbc 256 [text]
-       ----------------------------------------------------------------------
-       Encrypt / Decrypt Key/IV
-       - Arguments:
-       - Encrypt or Decrypt : [enckey/deckey/enciv/deciv] (case insensitive)
-       - Key or IV          : key must 32 Bytes, IV must 16 Bytes.
-       - ex) java -jar aes-0.0.1.jar enckey [keyText]
-       ----------------------------------------------------------------------
-       Make Random key text(A-Z,a-z,0-9,SpecialSymbol(like !@#$....))
-       - Arguments:
-       - RandStr            : Make Rand Str : [randstr] (case insensitive)
-       - Langth             : [Number > 0]
-       - ex) java -jar aes-0.0.1.jar randstr 32
-       ----------------------------------------------------------------------
-      """.trimIndent()
-    )
+    println( """
+ ----------------------------------------------------------------------
+ Encrypt / Decrypt Text
+ - Arguments:
+   Type       : [enc/dec] (case insensitive)
+   Mode       : [cbc/ecb] (case insensitive)
+   Key Length : [128/192/256]
+   Text       : ["text for Encrypt or Decrypt"]
+ - ex) java -jar aes-0.0.1.jar enc cbc 256 [text]
+ ----------------------------------------------------------------------
+ Encrypt / Decrypt Key/IV
+ - Arguments:
+   Type       : [enckey/deckey/enciv/deciv] (case insensitive)
+   Key or IV  : key must 32 Bytes, IV must 16 Bytes.
+ - ex) java -jar aes-0.0.1.jar enckey [keyText]
+ ----------------------------------------------------------------------
+ Make Random key text(A-Z,a-z,0-9,SpecialSymbol(like !@#$....))
+ - Arguments:
+   RandStr    : Make Rand Str : [randstr] (case insensitive)
+   Length     : [Number > 0]
+ - ex) java -jar aes-0.0.1.jar randstr 32
+ ----------------------------------------------------------------------
+""")
   }
 
   fun printArgsLength1(cmd: String) {
@@ -62,7 +59,7 @@ class AesApplicationRunner(secretProperties: SecretProperties): ApplicationRunne
     }
   }
 
-  fun printArgsLength2(cmd: String, text: String, keyAesKey: String, keyIv: String) {
+  fun printArgsLength2(cmd: String, text: String) {
     when (cmd){
       "ENCKEY" -> {
         if(text.length != 32) {
@@ -140,7 +137,6 @@ class AesApplicationRunner(secretProperties: SecretProperties): ApplicationRunne
       println("Encrypted Text : $result")
     } else {
       println("Decrypted AES Mode: $mode, key length: $keyLength, Text: $text")
-      println("Encrypted text: $text")
       val result: String = AES.dec(aesKey, iv, mode, keyLength, text)
       println("Original Text : $result")
     }
