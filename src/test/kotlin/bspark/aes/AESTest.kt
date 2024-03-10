@@ -9,7 +9,7 @@ class AESTest{
   @Test
   @DisplayName("AES 암호화 테스트")
   fun enc() {
-    val str: String = "hello world"//"1111111111111111"
+    val str = "hello world"//"1111111111111111"
     var encStr = ""
     var decStr = ""
     /*
