@@ -16,7 +16,7 @@ class AesApplicationRunner(secretProperties: SecretProperties): ApplicationRunne
   private final val aesKey: String = if(secretProperties.encAesKey.isNullOrEmpty()) secretProperties.aesKey else AES.dec(keyAesKey, keyIv, "CBC", 256, secretProperties.encAesKey)
   private final val iv: String = if(secretProperties.encIv.isNullOrEmpty()) secretProperties.iv else AES.dec(keyAesKey, keyIv, "CBC", 256, secretProperties.encIv)
   override fun run(args: ApplicationArguments?) {
-    val argsArr: Array<String> = args?.sourceArgs ?: arrayOf("")
+    val argsArr: Array<String> = args?.sourceArgs?: arrayOf("")
 
     when(argsArr.size) {
       1 -> printArgsLength1(argsArr[0].uppercase())
