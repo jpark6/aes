@@ -2,6 +2,8 @@ application:
   title: 'AES Encrypt/Decrypt Tool'
   version: '1.0.0'
 spring:
+  main:
+    banner-mode: false
   config:
     import:
       - secret.yml

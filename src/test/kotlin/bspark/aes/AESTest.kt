@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.context.SpringBootTest
 
-@SpringBootTest
+@SpringBootTest(properties = ["spring.main.banner-mode=off"])
 @EnableConfigurationProperties(SecretProperties::class)
 class AESTest(
  @Autowired private val secretProperties: SecretProperties
