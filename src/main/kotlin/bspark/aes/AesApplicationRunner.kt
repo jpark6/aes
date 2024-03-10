@@ -58,7 +58,7 @@ class AesApplicationRunner(private val secretProperties: SecretProperties): Appl
 
   fun printArgsLength1(cmd: String) {
     when (cmd) {
-      "help", "--help" -> printHelpText()
+      "HELP", "--HELP" -> printHelpText()
     }
   }
 
@@ -135,11 +135,11 @@ class AesApplicationRunner(private val secretProperties: SecretProperties): Appl
     log.info("iv  : $iv");
 
     if(cmd == "ENC") {
-      println("Encrypt AES Mode: $mode, key length: $keyLength, Text  : $text")
+      println("Encrypt AES Mode: $mode, key length: $keyLength, Text: $text")
       val result: String = AES.enc(aesKey, iv, mode, keyLength, text)
       println("Encrypted Text : $result")
     } else {
-      println("Decrypted AES Mode: $mode, key length: $keyLength, Text  : $text")
+      println("Decrypted AES Mode: $mode, key length: $keyLength, Text: $text")
       println("Encrypted text: $text")
       val result: String = AES.dec(aesKey, iv, mode, keyLength, text)
       println("Original Text : $result")
