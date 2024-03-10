@@ -7,15 +7,13 @@ import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
-class AES private constructor() {
+class AES {
   companion object {
-    private const val KEY: String = "!@#1sdf%\$aa^&%^*ROd>fh123\$/ASDKv"
-    private const val IV: String = "e36w&<?:aWS98#-="
     private const val ECB: String = "AES/ECB/PKCS5PADDING"
     private const val CBC: String = "AES/CBC/PKCS5PADDING"
     private val log: Logger = LoggerFactory.getLogger(AES::class.java)
 
-    fun enc(mode: String, keyLength: Int, str: String): String {
+    fun enc(key: String, iv: String, mode: String, keyLength: Int, str: String): String {
       if (str.isEmpty()) {
         log.error("str is required!")
         return str
@@ -29,7 +27,7 @@ class AES private constructor() {
         return str
       }
 
-      var aesKey: String = KEY
+      var aesKey: String = key
       when(keyLength) {
         128 -> aesKey = aesKey.substring(0,16)
         192 -> aesKey = aesKey.substring(0,24)
@@ -37,7 +35,7 @@ class AES private constructor() {
       val aesMode: String = if(mode.uppercase() == "CBC") CBC else ECB
 
       val keySpec = SecretKeySpec(aesKey.toByteArray(charset("UTF-8")), "AES")
-      val ivSpec = IvParameterSpec(IV.toByteArray(charset("UTF-8")))
+      val ivSpec = IvParameterSpec(iv.toByteArray(charset("UTF-8")))
 
       val cipher = Cipher.getInstance(aesMode)
       if(mode.uppercase() == "CBC") {
@@ -49,7 +47,7 @@ class AES private constructor() {
       return String(Base64.getEncoder().encode(encByteArr))
     }
 
-    fun dec(mode: String, keyLength: Int, str: String): String {
+    fun dec(key: String, iv: String, mode: String, keyLength: Int, str: String): String {
       if (str.isEmpty()) {
         log.error("str is required!")
         return str
@@ -63,7 +61,7 @@ class AES private constructor() {
         return str
       }
 
-      var aesKey: String = KEY
+      var aesKey: String = key
       when(keyLength) {
         128 -> aesKey = aesKey.substring(0,16)
         192 -> aesKey = aesKey.substring(0,24)
@@ -71,7 +69,7 @@ class AES private constructor() {
       val aesMode: String = if(mode.uppercase() == "CBC") CBC else ECB
 
       val keySpec = SecretKeySpec(aesKey.toByteArray(charset("UTF-8")), "AES")
-      val ivSpec = IvParameterSpec(IV.toByteArray(charset("UTF-8")))
+      val ivSpec = IvParameterSpec(iv.toByteArray(charset("UTF-8")))
 
       val cipher: Cipher = Cipher.getInstance(aesMode)
       if(mode.uppercase() == "CBC") {

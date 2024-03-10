@@ -1,12 +1,12 @@
 application:
   title: 'AES Encrypt/Decrypt Tool'
-  version: '1.0.0'
+  version: '0.0.1'
 spring:
   config:
     import:
       - secret.yml
 logging:
   level:
-    root: ERROR
+    root: info
   pattern:
     console: "[%d{yyyy-MM-dd HH:mm:ss.SSS}] %-5level ${PID:-} [%8.8thread] %-30.30logger{30} : %msg%n"
