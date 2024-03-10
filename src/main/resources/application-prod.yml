@@ -1,0 +1,8 @@
+application:
+  title: 'AES Encrypt/Decrypt Tool'
+  version: '0.0.1'
+logging:
+  level:
+    root: ERROR
+  pattern:
+    console: "[%d{yyyy-MM-dd HH:mm:ss.SSS}] %-5level ${PID:-} [%8.8thread] %-30.30logger{30} : %msg%n"
