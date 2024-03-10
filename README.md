@@ -13,7 +13,7 @@
       - key length[128/192/256] - 키 사이즈
     - Command:
       ```shell
-      java -jar aes-0.0.1.jar [enc/dec] [cbc/ecb] [128/192/256] text
+      java -jar aes-1.0.0.jar [enc/dec] [cbc/ecb] [128/192/256] text
       ```
 
   - 랜덤 문자열 생성(키 생성)
@@ -22,7 +22,7 @@
       - length[>0] - 문자열 길이
     - Command:
       ```shell
-      java -jar aes-0.0.1.jar randstr length
+      java -jar aes-1.0.0.jar randstr length
       ```
       
   - KEY/IV 암복호화  
