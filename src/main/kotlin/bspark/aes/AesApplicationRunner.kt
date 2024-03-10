@@ -13,8 +13,8 @@ class AesApplicationRunner(secretProperties: SecretProperties): ApplicationRunne
   private final val log: Logger = LoggerFactory.getLogger(javaClass)
   private final val keyAesKey = "Q^hgA|PEs\"g=r,\$@uGLfS9zCmMK0LS*Y"
   private final val keyIv = ".AZR[}@EnXWpeMz]"
-  private final val aesKey: String = if(secretProperties.encAesKey.isNullOrEmpty()) secretProperties.aesKey else AES.dec(keyAesKey, keyIv, "CBC", 256, secretProperties.encAesKey)
-  private final val iv: String = if(secretProperties.encIv.isNullOrEmpty()) secretProperties.iv else AES.dec(keyAesKey, keyIv, "CBC", 256, secretProperties.encIv)
+  private final val aesKey: String = if(secretProperties.encAesKey.isNullOrEmpty()) secretProperties.aesKey!! else AES.dec(keyAesKey, keyIv, "CBC", 256, secretProperties.encAesKey)
+  private final val iv: String = if(secretProperties.encIv.isNullOrEmpty()) secretProperties.iv!! else AES.dec(keyAesKey, keyIv, "CBC", 256, secretProperties.encIv)
   override fun run(args: ApplicationArguments?) {
     val argsArr: Array<String> = args?.sourceArgs?: arrayOf("")
 
