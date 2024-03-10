@@ -7,14 +7,14 @@ import kotlin.math.floor
 
 class Util {
   companion object {
-    private final val log: Logger = LoggerFactory.getLogger(Util::class.java)
+    private val log: Logger = LoggerFactory.getLogger(Util::class.java)
     fun makeRandomStr(length: Int): String {
       if(length < 0) {
         log.error("length must >0")
         return ""
       }
-      val charArr: Array<String> = Pattern.compile("").split("01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~`!@#$%^&*()_-+={[}]|\\:;\"'<,>.?/");
-      var result = "";
+      val charArr: Array<String> = Pattern.compile("").split("01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~`!@#$%^&*()_-+={[}]|\\:;\"'<,>.?/")
+      var result = ""
       for(i in 0 until length) {
         result += charArr[floor(Math.random()*charArr.size).toInt()]
       }

@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component
 
 @Component
 @EnableConfigurationProperties(SecretProperties::class)
-class AesApplicationRunner(private val secretProperties: SecretProperties): ApplicationRunner {
+class AesApplicationRunner(secretProperties: SecretProperties): ApplicationRunner {
   private final val log: Logger = LoggerFactory.getLogger(javaClass)
   private final val keyAesKey = "Q^hgA|PEs\"g=r,\$@uGLfS9zCmMK0LS*Y"
-  private final val keyIv = ".AZR[}@EnXWpeMz]";
+  private final val keyIv = ".AZR[}@EnXWpeMz]"
   private final val aesKey = AES.dec(keyAesKey, keyIv, "CBC", 256, secretProperties.aesKey)
   private final val iv = AES.dec(keyAesKey, keyIv, "CBC", 256, secretProperties.iv)
   override fun run(args: ApplicationArguments?) {
@@ -67,7 +67,7 @@ class AesApplicationRunner(private val secretProperties: SecretProperties): Appl
       "ENCKEY" -> {
         if(text.length != 32) {
           log.error("AES Key length must 32 Bytes: input key length is ${text.length} Bytes")
-          return;
+          return
         }
         val encKeyText = AES.enc(keyAesKey, keyIv, "CBC", 256, text)
         println("Encrypt Key AES 256 CBC: $encKeyText")
@@ -81,7 +81,7 @@ class AesApplicationRunner(private val secretProperties: SecretProperties): Appl
       "ENCIV" -> {
         if(text.length != 16) {
           log.error("AES IV length must 16 Bytes: input IV length is ${text.length} Bytes")
-          return;
+          return
         }
         val encIvText = AES.enc(keyAesKey, keyIv, "CBC", 256, text)
         println("Encrypt IV AES 256 CBC: $encIvText")
@@ -95,18 +95,18 @@ class AesApplicationRunner(private val secretProperties: SecretProperties): Appl
       "RANDSTR" -> {
         if(!text.matches("[0-9]+".toRegex())) {
           log.error("Length must number: input length is $text")
-          return;
+          return
         }
         val length = Integer.valueOf(text)
         if(length < 0) {
           log.error("Length must larger then 0: input length is $text")
-          return;
+          return
         }
         val randStr = Util.makeRandomStr(length)
         println("Random Text: $randStr, length: ${randStr.length}")
         return
       }
-      else -> printHelpText();
+      else -> printHelpText()
     }
   }
   fun printArgsLength4(cmd: String, mode: String, keyLengthStr: String, text: String) {
@@ -131,8 +131,8 @@ class AesApplicationRunner(private val secretProperties: SecretProperties): Appl
     val keyLength: Int = Integer.valueOf(keyLengthStr)
 
     // dev 용, log level DEBUG
-    log.info("key : $aesKey");
-    log.info("iv  : $iv");
+    log.info("key : $aesKey")
+    log.info("iv  : $iv")
 
     if(cmd == "ENC") {
       println("Encrypt AES Mode: $mode, key length: $keyLength, Text: $text")
