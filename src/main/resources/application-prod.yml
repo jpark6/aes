@@ -3,7 +3,7 @@ application:
   version: '1.0.0'
 spring:
   main:
-    banner-mode: false
+    banner-mode: 'OFF'
   config:
     import:
       - secret.yml
